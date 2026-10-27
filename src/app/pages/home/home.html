@@ -1,4 +1,14 @@
 <div>
     <h1>Home page</h1>
-    <loading></loading>
+    @if (loading()) {
+        <loading />
+    } @else if (error()) {
+        <p>{{ error() }}</p>
+    } @else {
+        <ul>
+            @for (obj of objects(); track obj.objectName) {
+                <li>{{ obj.objectName }} — rating: {{ obj.rating }}</li>
+            }
+        </ul>
+    }
 </div>
