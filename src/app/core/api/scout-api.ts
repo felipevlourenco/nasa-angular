@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ScoutObject, ScoutResponse } from './types';
+import { ScoutObject, ScoutResponse } from '../types';
 
 @Injectable({ providedIn: 'root' })
 export class ScoutApi {

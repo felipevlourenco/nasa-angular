@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import type { ScoutResponse } from '../types';
 import { ScoutApi } from './scout-api';
 import scoutMock from './scout.mock.json';
-import type { ScoutResponse } from './types';
 
 describe('ScoutApi', () => {
     let scoutApi: ScoutApi;

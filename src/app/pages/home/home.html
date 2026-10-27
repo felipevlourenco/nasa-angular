@@ -1,15 +1,15 @@
 <div>
     <h1>Home page</h1>
-    @if (loading()) {
+    @if (store.loading()) {
         <loading />
-    } @else if (error()) {
-        <p>{{ error() }}</p>
+    } @else if (store.error()) {
+        <p>{{ store.error() }}</p>
     } @else {
         <ag-grid-angular
             style="height: 500px; width: 100%"
             [theme]="theme"
             [columnDefs]="columnDefs"
-            [rowData]="objects()"
+            [rowData]="store.objects()"
         />
     }
 </div>
