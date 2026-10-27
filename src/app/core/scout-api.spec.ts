@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ScoutApi } from './scout-api';
+import scoutMock from './scout.mock.json';
+import type { ScoutResponse } from './types';
 
 describe('ScoutApi', () => {
     let scoutApi: ScoutApi;
@@ -14,17 +16,17 @@ describe('ScoutApi', () => {
     });
 
     it('should return an array of objects', async () => {
-        const data = [{ objectName: 'A11HAVq', rating: 0 }];
+        const mock: ScoutResponse = scoutMock;
 
         vi.stubGlobal(
             'fetch',
             vi.fn().mockReturnValue({
                 ok: true,
-                json: () => Promise.resolve({ signature: {}, count: 1, data }),
+                json: () => Promise.resolve(mock),
             }),
         );
 
-        await expect(scoutApi.getObjects()).resolves.toEqual(data);
+        await expect(scoutApi.getObjects()).resolves.toEqual(mock.data);
     });
 
     it('should throw when response is not ok', async () => {

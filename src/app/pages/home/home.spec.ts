@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { ScoutApi } from '../../core/scout-api';
+import scoutMock from '../../core/scout.mock.json';
+import type { ScoutResponse } from '../../core/types';
 import { Home } from './home';
 
+const mockObjects = (scoutMock as ScoutResponse).data.slice(0, 2);
+
 const scoutApiStub = {
-    getObjects: () =>
-        Promise.resolve([
-            { objectName: 'A11HAVq', rating: 0 },
-            { objectName: 'X91327', rating: 2 },
-        ]),
+    getObjects: () => Promise.resolve(mockObjects),
 };
 
 describe('Home', () => {
@@ -23,10 +23,7 @@ describe('Home', () => {
         await fixture.whenStable();
         fixture.detectChanges();
 
-        expect(fixture.componentInstance.objects()).toEqual([
-            { objectName: 'A11HAVq', rating: 0 },
-            { objectName: 'X91327', rating: 2 },
-        ]);
+        expect(fixture.componentInstance.objects()).toEqual(mockObjects);
         expect(fixture.componentInstance.loading()).toBe(false);
     });
 });
