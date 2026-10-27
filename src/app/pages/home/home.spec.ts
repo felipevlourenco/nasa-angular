@@ -11,21 +11,22 @@ const scoutApiStub = {
 };
 
 describe('Home', () => {
-    it('renders the fetched objects in a list', async () => {
+    it('loads the fetched objects into the grid data', async () => {
         await TestBed.configureTestingModule({
             imports: [Home],
             providers: [{ provide: ScoutApi, useValue: scoutApiStub }],
         }).compileComponents();
 
         const fixture = TestBed.createComponent(Home);
+        expect(fixture.componentInstance.loading()).toBe(true);
 
         await fixture.whenStable();
         fixture.detectChanges();
 
-        const items = fixture.nativeElement.querySelectorAll('li');
-
-        expect(items).toHaveLength(2);
-        expect(items[0].textContent).toContain('A11HAVq');
-        expect(items[1].textContent).toContain('X91327');
+        expect(fixture.componentInstance.objects()).toEqual([
+            { objectName: 'A11HAVq', rating: 0 },
+            { objectName: 'X91327', rating: 2 },
+        ]);
+        expect(fixture.componentInstance.loading()).toBe(false);
     });
 });

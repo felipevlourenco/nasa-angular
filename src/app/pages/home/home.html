@@ -5,10 +5,11 @@
     } @else if (error()) {
         <p>{{ error() }}</p>
     } @else {
-        <ul>
-            @for (obj of objects(); track obj.objectName) {
-                <li>{{ obj.objectName }} — rating: {{ obj.rating }}</li>
-            }
-        </ul>
+        <ag-grid-angular
+            style="height: 500px; width: 100%"
+            [theme]="theme"
+            [columnDefs]="columnDefs"
+            [rowData]="objects()"
+        />
     }
 </div>

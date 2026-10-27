@@ -3,8 +3,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
     imports: [RouterLink, RouterLinkActive],
-    selector: 'header',
-    styleUrl: './header.css',
-    templateUrl: './header.html',
+    selector: 'app-header',
+    styleUrl: './app-header.css',
+    templateUrl: './app-header.html',
 })
-export class Header {}
+export class AppHeader {}
