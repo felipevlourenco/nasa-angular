@@ -1,8 +1,11 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { AgGridAngular } from 'ag-grid-angular';
+import type { RowClickedEvent } from 'ag-grid-community';
 import scoutMock from '../../core/api/scout.mock.json';
 import { ScoutStore } from '../../core/store/scout-store';
-import type { ScoutResponse } from '../../core/types';
+import type { ScoutObject, ScoutResponse } from '../../core/types';
 import { Home } from './home';
 
 const mockObjects = (scoutMock as ScoutResponse).data.slice(0, 2);
@@ -54,5 +57,31 @@ describe('Home', () => {
         fixture.detectChanges();
 
         expect(fixture.nativeElement.querySelector('ag-grid-angular')).toBeTruthy();
+    });
+
+    it('passes the search input value to the grid as quickFilterText', () => {
+        const { fixture } = setup({ objects: signal(mockObjects) });
+        fixture.detectChanges();
+
+        fixture.componentInstance.onSearch('ISeO');
+        fixture.detectChanges();
+
+        const grid = fixture.debugElement.query(By.directive(AgGridAngular)).componentInstance;
+        expect(grid.quickFilterText).toBe('ISeO');
+    });
+
+    it('opens the drawer with the clicked candidate details', () => {
+        const { fixture } = setup({ objects: signal(mockObjects) });
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement.textContent).not.toContain('Candidate details');
+
+        const candidate = mockObjects[0];
+        fixture.componentInstance.onRowClicked({ data: candidate } as RowClickedEvent<ScoutObject>);
+        fixture.detectChanges();
+
+        const text = fixture.nativeElement.textContent;
+        expect(text).toContain('Candidate details');
+        expect(text).toContain(candidate.ra);
     });
 });

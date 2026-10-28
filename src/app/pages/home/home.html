@@ -1,6 +1,11 @@
 <div>
     <h1>Home page</h1>
-    <input type="search" placeholder="Search..." (input)="onSearch($event.target.value)" />
+    <input
+        pInputText
+        type="search"
+        placeholder="Search something..."
+        (input)="onSearch($event.target.value)"
+    />
     @if (store.loading()) {
         <loading />
     } @else if (store.error()) {
@@ -13,6 +18,21 @@
             [columnDefs]="columnDefs"
             [rowData]="store.objects()"
             [quickFilterText]="searchTerm()"
+            (rowClicked)="onRowClicked($event)"
         />
+        <p-drawer [(visible)]="drawerOpen" header="Candidate details" position="right">
+            @if (selectedObject(); as obj) {
+                <dl>
+                    <dt>Right ascension</dt>
+                    <dd>{{ obj.ra }}</dd>
+                    <dt>Declination</dt>
+                    <dd>{{ obj.dec }}</dd>
+                    <dt>MOID</dt>
+                    <dd>{{ obj.moid }}</dd>
+                    <dt>Ephemeris time</dt>
+                    <dd>{{ obj.tEphem }}</dd>
+                </dl>
+            }
+        </p-drawer>
     }
 </div>

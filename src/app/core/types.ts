@@ -13,6 +13,22 @@ export interface ScoutObject {
     phaScore: number;
     lastRun: string;
     rating: number | null;
+    moid: string;
+    Vmag: string;
+    rmsN: string;
+    unc: string;
+    uncP1: string;
+    arc: string;
+    rate: string;
+    ra: string;
+    dec: string;
+    elong: string;
+    tEphem: string;
+    vInf?: string | null;
+    tisserandScore: number;
+    ieoScore: number;
+    neo1kmScore: number;
+    geocentricScore: number;
 }
 
 export type ThreatLevel = 'High' | 'Medium' | 'Low';

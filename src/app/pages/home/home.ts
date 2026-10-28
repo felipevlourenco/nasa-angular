@@ -1,6 +1,8 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
-import { ColDef, themeQuartz, ValueGetterParams } from 'ag-grid-community';
+import { ColDef, RowClickedEvent, themeQuartz, ValueGetterParams } from 'ag-grid-community';
+import { DrawerModule } from 'primeng/drawer';
+import { InputTextModule } from 'primeng/inputtext';
 import { ScoutStore } from '../../core/store/scout-store';
 import type { ScoutObject, ThreatLevel } from '../../core/types';
 import { Loading } from '../../shared/loading/loading';
@@ -17,7 +19,7 @@ function threatLevel(score: number): ThreatLevel {
 }
 
 @Component({
-    imports: [Loading, AgGridAngular],
+    imports: [Loading, AgGridAngular, DrawerModule, InputTextModule],
     selector: 'home',
     styleUrl: './home.css',
     templateUrl: './home.html',
@@ -25,10 +27,13 @@ function threatLevel(score: number): ThreatLevel {
 export class Home implements OnInit {
     protected readonly store = inject(ScoutStore);
     protected readonly searchTerm = signal('');
+    protected readonly drawerOpen = signal(false);
+    protected readonly selectedObject = signal<ScoutObject | null>(null);
 
     readonly defaultColDef: ColDef = {
         sortable: true,
         filter: true,
+        // floatingFilter: true,
         resizable: true,
     };
 
@@ -59,5 +64,10 @@ export class Home implements OnInit {
 
     onSearch(query: string): void {
         this.searchTerm.set(query);
+    }
+
+    onRowClicked({ data }: RowClickedEvent<ScoutObject>): void {
+        this.selectedObject.set(data ?? null);
+        this.drawerOpen.set(true);
     }
 }
