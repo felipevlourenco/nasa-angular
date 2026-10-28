@@ -1,3 +1,40 @@
-<div>
-    <h1>Contact page</h1>
+<!-- contact.html -->
+<div class="contact-page">
+    <section class="info">
+        <h1>Contact us</h1>
+        <p>Send us a message and we'll get back to you.</p>
+    </section>
+    <section class="form-card">
+        <h2>Send your question</h2>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+                <div class="field">
+                    <label for="fullName">Full name *</label>
+                    <input id="fullName" pInputText formControlName="fullName" />
+                    @if (form.controls.fullName.invalid && form.controls.fullName.touched) {
+                        <small class="error">Full name is required.</small>
+                    }
+                </div>
+                <div class="field">
+                    <label for="email">Work email *</label>
+                    <input id="email" pInputText type="email" formControlName="email" />
+                    @if (form.controls.email.touched && form.controls.email.hasError('required')) {
+                        <small class="error">Email is required.</small>
+                    }
+                    @if (form.controls.email.touched && form.controls.email.hasError('email')) {
+                        <small class="error">Enter a valid email.</small>
+                    }
+                </div>
+            </div>
+            <div class="field">
+                <label for="message">Message *</label>
+                <textarea id="message" pTextarea rows="5" formControlName="message"></textarea>
+                @if (form.controls.message.invalid && form.controls.message.touched) {
+                    <small class="error">Message is required.</small>
+                }
+            </div>
+            <button pButton type="submit" [disabled]="form.invalid">Send message</button>
+        </form>
+    </section>
+    <p-toast />
 </div>
