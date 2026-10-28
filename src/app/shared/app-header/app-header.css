@@ -1,0 +1,39 @@
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #e2e8f0;
+    background: white;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+}
+
+.logo svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #2f9e5e;
+}
+
+nav {
+    display: flex;
+    gap: 0.5rem;
+}
+
+nav a {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    color: #475569;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav a.active {
+    background: #e3f5e7;
+    color: #1a7f37;
+}
