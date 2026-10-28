@@ -3,6 +3,39 @@
     <section class="info">
         <h1>Contact us</h1>
         <p>Send us a message and we'll get back to you.</p>
+
+        <ul class="contact-details">
+            <li>
+                <svg data-p-icon="envelope"></svg>
+                <div>
+                    <span class="label">Email</span>
+                    <span>hello&#64;company.com</span>
+                </div>
+            </li>
+            <li>
+                <svg data-p-icon="phone"></svg>
+                <div>
+                    <span class="label">Phone</span>
+                    <span>+00 00 000 0000</span>
+                </div>
+            </li>
+            <li>
+                <svg data-p-icon="map"></svg>
+                <div>
+                    <span class="label">Office</span>
+                    <span>Street 123, City 456</span>
+                </div>
+            </li>
+        </ul>
+
+        <div class="social-links">
+            <span class="label">Follow us</span>
+            <div class="social-icons">
+                <a href="#" aria-label="LinkedIn"><svg data-p-icon="linkedin"></svg></a>
+                <a href="#" aria-label="GitHub"><svg data-p-icon="github"></svg></a>
+                <a href="#" aria-label="Twitter"><svg data-p-icon="twitter"></svg></a>
+            </div>
+        </div>
     </section>
     <section class="form-card">
         <h2>Send your question</h2>
@@ -24,6 +57,21 @@
                     @if (form.controls.email.touched && form.controls.email.hasError('email')) {
                         <small class="error">Enter a valid email.</small>
                     }
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="field">
+                    <label for="company">Company (optional)</label>
+                    <input id="company" pInputText formControlName="company" />
+                </div>
+                <div class="field">
+                    <label for="employees">Employees (optional)</label>
+                    <p-select
+                        id="employees"
+                        formControlName="employees"
+                        [options]="employeeRanges"
+                        placeholder="Select a range"
+                    />
                 </div>
             </div>
             <div class="field">
