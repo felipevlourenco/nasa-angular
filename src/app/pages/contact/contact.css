@@ -1,19 +1,28 @@
 .contact-page {
     display: grid;
     grid-template-columns: 1fr 1.2fr;
-    gap: 2rem;
+    gap: 32px;
 }
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: 16px;
 }
 .field {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    margin-bottom: 1rem;
+    gap: 4px;
+    margin-bottom: 16px;
 }
 .error {
     color: #dc2626;
+}
+
+@media (max-width: 640px) {
+    .contact-page {
+        grid-template-columns: 1fr;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
+    }
 }

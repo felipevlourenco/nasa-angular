@@ -46,8 +46,8 @@ export class Contact {
         // Send
         this.messageService.add({
             severity: 'success',
-            summary: 'Saved successfully',
-            detail: 'Your changes have been saved.',
+            summary: 'Message Sent',
+            detail: 'Your was succesfully sent.',
         });
     }
 }

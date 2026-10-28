@@ -21,6 +21,6 @@ describe('App', () => {
         await TestBed.inject(Router).navigateByUrl('/');
         fixture.detectChanges();
         const compiled = fixture.nativeElement as HTMLElement;
-        expect(compiled.querySelector('h1')?.textContent).toContain('Home page');
+        expect(compiled.querySelector('h1')?.textContent).toContain('Nasa Scout');
     });
 });

@@ -47,9 +47,7 @@ describe('Home', () => {
         const { fixture } = setup({ error: signal('Scout API error: 500') });
         fixture.detectChanges();
 
-        expect(fixture.nativeElement.querySelector('p')?.textContent).toContain(
-            'Scout API error: 500',
-        );
+        expect(fixture.nativeElement.textContent).toContain('Scout API error: 500');
     });
 
     it('renders the grid once data is loaded', () => {
@@ -74,15 +72,17 @@ describe('Home', () => {
         const { fixture } = setup({ objects: signal(mockObjects) });
         fixture.detectChanges();
 
-        expect(fixture.nativeElement.textContent).not.toContain('Candidate details');
+        expect(fixture.nativeElement.querySelector('h2')).toBeFalsy();
 
         const candidate = mockObjects[0];
         fixture.componentInstance.onRowClicked({ data: candidate } as RowClickedEvent<ScoutObject>);
         fixture.detectChanges();
 
         const text = fixture.nativeElement.textContent;
-        expect(text).toContain('Candidate details');
-        expect(text).toContain(candidate.ra);
+        expect(fixture.nativeElement.querySelector('h2')?.textContent).toContain(
+            candidate.objectName,
+        );
+        expect(text).toContain(candidate.moid);
     });
 
     it('calls store.load() again when Refresh is clicked', () => {

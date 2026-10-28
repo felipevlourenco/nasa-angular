@@ -1,5 +1,9 @@
 <div>
     <h1>Nasa Scout</h1>
+    <p class="subtitle">
+        Newly discovered near-Earth object candidates from NASA/JPL's Scout system. Select a row to
+        see its full details.
+    </p>
     <div class="action-section">
         <input
             pInputText
@@ -36,17 +40,68 @@
             (rowClicked)="onRowClicked($event)"
         />
     </div>
-    <p-drawer [(visible)]="drawerOpen" header="Candidate details" position="right">
+    <p-drawer [(visible)]="drawerOpen" position="right">
         @if (selectedObject(); as obj) {
+            <p class="header">Candidate</p>
+            <h2>{{ obj.objectName }}</h2>
+            <span class="tag tag-{{ threatLevel(obj).toLowerCase() }}">
+                {{ threatLevel(obj) }} threat
+            </span>
+
+            <h3>Observation</h3>
             <dl>
-                <dt>Right ascension</dt>
-                <dd>{{ obj.ra }}</dd>
-                <dt>Declination</dt>
-                <dd>{{ obj.dec }}</dd>
-                <dt>MOID</dt>
-                <dd>{{ obj.moid }}</dd>
-                <dt>Ephemeris time</dt>
-                <dd>{{ obj.tEphem }}</dd>
+                <div class="row">
+                    <dt>Absolute magnitude (H)</dt>
+                    <dd>{{ obj.H }}</dd>
+                </div>
+                <div class="row">
+                    <dt>Apparent magnitude (V)</dt>
+                    <dd>{{ obj.Vmag }}</dd>
+                </div>
+                <div class="row">
+                    <dt>Observations</dt>
+                    <dd>{{ obj.nObs }}</dd>
+                </div>
+                <div class="row">
+                    <dt>Arc length</dt>
+                    <dd>{{ obj.arc }} h</dd>
+                </div>
+                <div class="row">
+                    <dt>Updated (UTC)</dt>
+                    <dd>{{ obj.lastRun }}</dd>
+                </div>
+            </dl>
+
+            <h3>Orbit</h3>
+            <dl>
+                <div class="row">
+                    <dt>Close approach</dt>
+                    <dd>{{ obj.caDist }} LD</dd>
+                </div>
+                <div class="row">
+                    <dt>MOID</dt>
+                    <dd>{{ obj.moid }} AU</dd>
+                </div>
+            </dl>
+
+            <h3>Scores</h3>
+            <dl>
+                <div class="row">
+                    <dt>NEO score</dt>
+                    <dd>{{ obj.neoScore }}</dd>
+                </div>
+                <div class="row">
+                    <dt>PHA score</dt>
+                    <dd>{{ obj.phaScore }}</dd>
+                </div>
+                <div class="row">
+                    <dt>Geocentric score</dt>
+                    <dd>{{ obj.geocentricScore }}</dd>
+                </div>
+                <div class="row">
+                    <dt>Threat index (NEO + PHA avg.)</dt>
+                    <dd>{{ threatIndex(obj) }} &middot; {{ threatLevel(obj) }}</dd>
+                </div>
             </dl>
         }
     </p-drawer>

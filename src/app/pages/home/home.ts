@@ -11,7 +11,11 @@ import { ScoutStore } from '../../core/store/scout-store';
 import type { ScoutObject, ThreatLevel } from '../../core/types';
 import { ErrorOverlay } from './overlays/error-overlay';
 
-function threatLevel(score: number): ThreatLevel {
+function computeThreatIndex(obj: ScoutObject): number {
+    return (obj.neoScore + obj.phaScore) / 2;
+}
+
+function threatLevelFor(score: number): ThreatLevel {
     if (score >= 70) {
         return 'High';
     }
@@ -61,9 +65,9 @@ export class Home implements OnInit {
         {
             headerName: 'Threat index',
             valueGetter: ({ data }: ValueGetterParams<ScoutObject>) =>
-                data ? (data.neoScore + data.phaScore) / 2 : null,
+                data ? computeThreatIndex(data) : null,
             cellRenderer: (params: { value: number }) => {
-                const level = threatLevel(params.value);
+                const level = threatLevelFor(params.value);
                 return `<span class="tag tag-${level.toLowerCase()}">${Math.round(params.value)} ${level}</span>`;
             },
             sort: 'desc',
@@ -82,5 +86,13 @@ export class Home implements OnInit {
     onRowClicked({ data }: RowClickedEvent<ScoutObject>): void {
         this.selectedObject.set(data ?? null);
         this.drawerOpen.set(true);
+    }
+
+    protected threatIndex(obj: ScoutObject): number {
+        return Math.round(computeThreatIndex(obj));
+    }
+
+    protected threatLevel(obj: ScoutObject): ThreatLevel {
+        return threatLevelFor(computeThreatIndex(obj));
     }
 }
