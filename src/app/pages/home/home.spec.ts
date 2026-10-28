@@ -36,11 +36,11 @@ describe('Home', () => {
         expect(storeStub.load).toHaveBeenCalled();
     });
 
-    it('shows the loading indicator while the store is loading', () => {
+    it('shows the progressbar indicator while the store is loading', () => {
         const { fixture } = setup({ loading: signal(true) });
         fixture.detectChanges();
 
-        expect(fixture.nativeElement.querySelector('loading')).toBeTruthy();
+        expect(fixture.nativeElement.querySelector('p-progressbar')).toBeTruthy();
     });
 
     it('shows the error message when the store has an error', () => {
