@@ -9,6 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ScoutStore } from '../../core/store/scout-store';
 import type { ScoutObject, ThreatLevel } from '../../core/types';
+import { ErrorOverlay } from './overlays/error-overlay';
 
 function threatLevel(score: number): ThreatLevel {
     if (score >= 70) {
@@ -27,9 +28,9 @@ function threatLevel(score: number): ThreatLevel {
         DrawerModule,
         InputTextModule,
         ButtonModule,
+        ProgressBarModule,
         Refresh,
         Spinner,
-        ProgressBarModule,
     ],
     selector: 'home',
     styleUrl: './home.css',
@@ -41,10 +42,11 @@ export class Home implements OnInit {
     protected readonly drawerOpen = signal(false);
     protected readonly selectedObject = signal<ScoutObject | null>(null);
 
+    readonly noRowsOverlayComponent = ErrorOverlay;
+
     readonly defaultColDef: ColDef = {
         sortable: true,
         filter: true,
-        // floatingFilter: true,
         resizable: true,
     };
 

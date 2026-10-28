@@ -1,0 +1,9 @@
+@if (error; as message) {
+    <div class="empty-state">
+        <svg data-p-icon="exclamation-circle" class="empty-state-icon" />
+        <h2>Couldn't load Scout data</h2>
+        <p>{{ message }}</p>
+    </div>
+} @else {
+    <p>No candidates found.</p>
+}

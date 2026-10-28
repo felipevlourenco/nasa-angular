@@ -7,6 +7,9 @@
             placeholder="Search something..."
             (input)="onSearch($event.target.value)"
         />
+        @if (store.error()) {
+            <span class="status-text">Last attempt failed</span>
+        }
         <button pButton (click)="store.load()" [disabled]="store.loading()">
             @if (store.loading()) {
                 <svg data-p-icon="spinner" class="animate-spin"></svg>
@@ -16,37 +19,35 @@
             }
         </button>
     </div>
-    @if (store.error()) {
-        <p>{{ store.error() }}</p>
-    } @else {
-        <div class="table-section">
-            @if (store.loading()) {
-                <p-progressbar mode="indeterminate" class="progress" />
-            }
-            <ag-grid-angular
-                class="table"
-                [theme]="theme"
-                [defaultColDef]="defaultColDef"
-                [columnDefs]="columnDefs"
-                [rowData]="store.objects()"
-                [quickFilterText]="searchTerm()"
-                [loading]="store.loading()"
-                (rowClicked)="onRowClicked($event)"
-            />
-        </div>
-        <p-drawer [(visible)]="drawerOpen" header="Candidate details" position="right">
-            @if (selectedObject(); as obj) {
-                <dl>
-                    <dt>Right ascension</dt>
-                    <dd>{{ obj.ra }}</dd>
-                    <dt>Declination</dt>
-                    <dd>{{ obj.dec }}</dd>
-                    <dt>MOID</dt>
-                    <dd>{{ obj.moid }}</dd>
-                    <dt>Ephemeris time</dt>
-                    <dd>{{ obj.tEphem }}</dd>
-                </dl>
-            }
-        </p-drawer>
-    }
+    <div class="table-section">
+        @if (store.loading()) {
+            <p-progressbar mode="indeterminate" class="progress" />
+        }
+        <ag-grid-angular
+            class="table"
+            [theme]="theme"
+            [defaultColDef]="defaultColDef"
+            [columnDefs]="columnDefs"
+            [rowData]="store.objects()"
+            [quickFilterText]="searchTerm()"
+            [loading]="store.loading()"
+            [noRowsOverlayComponent]="noRowsOverlayComponent"
+            [noRowsOverlayComponentParams]="{ error: store.error() }"
+            (rowClicked)="onRowClicked($event)"
+        />
+    </div>
+    <p-drawer [(visible)]="drawerOpen" header="Candidate details" position="right">
+        @if (selectedObject(); as obj) {
+            <dl>
+                <dt>Right ascension</dt>
+                <dd>{{ obj.ra }}</dd>
+                <dt>Declination</dt>
+                <dd>{{ obj.dec }}</dd>
+                <dt>MOID</dt>
+                <dd>{{ obj.moid }}</dd>
+                <dt>Ephemeris time</dt>
+                <dd>{{ obj.tEphem }}</dd>
+            </dl>
+        }
+    </p-drawer>
 </div>
