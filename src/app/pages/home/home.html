@@ -1,5 +1,6 @@
 <div>
     <h1>Home page</h1>
+    <input type="search" placeholder="Search..." (input)="onSearch($event.target.value)" />
     @if (store.loading()) {
         <loading />
     } @else if (store.error()) {
@@ -8,8 +9,10 @@
         <ag-grid-angular
             style="height: 500px; width: 100%"
             [theme]="theme"
+            [defaultColDef]="defaultColDef"
             [columnDefs]="columnDefs"
             [rowData]="store.objects()"
+            [quickFilterText]="searchTerm()"
         />
     }
 </div>

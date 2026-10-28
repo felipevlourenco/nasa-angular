@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef, themeQuartz, ValueGetterParams } from 'ag-grid-community';
 import { ScoutStore } from '../../core/store/scout-store';
@@ -24,6 +24,13 @@ function threatLevel(score: number): ThreatLevel {
 })
 export class Home implements OnInit {
     protected readonly store = inject(ScoutStore);
+    protected readonly searchTerm = signal('');
+
+    readonly defaultColDef: ColDef = {
+        sortable: true,
+        filter: true,
+        resizable: true,
+    };
 
     readonly columnDefs: ColDef[] = [
         { field: 'objectName', headerName: 'Designation' },
@@ -48,5 +55,9 @@ export class Home implements OnInit {
 
     ngOnInit(): void {
         this.store.load();
+    }
+
+    onSearch(query: string): void {
+        this.searchTerm.set(query);
     }
 }
