@@ -26,6 +26,9 @@ export const ScoutStore = signalStore(
                 const objects = await scoutApi.getObjects();
                 patchState(store, { objects, loading: false });
             } catch (error: unknown) {
+                // Keep the last successful `objects` on a failed refresh instead of
+                // clearing them — stale data stays usable while `error` surfaces the
+                // failure, rather than wiping a working table on a flaky retry.
                 patchState(store, { loading: false, error: (error as Error)?.message });
             }
         },

@@ -14,6 +14,9 @@ interface ErrorOverlayParams extends INoRowsOverlayParams {
     styleUrl: './error-overlay.css',
 })
 export class ErrorOverlay implements INoRowsOverlayAngularComp {
+    // AG Grid instantiates overlay components with a bare `new`, outside Angular's
+    // injection context — `inject()`/constructor DI throws NG0203 here. Data must
+    // come through agInit(params) instead, not injected services.
     error: string | null = null;
 
     agInit(params: ErrorOverlayParams): void {
