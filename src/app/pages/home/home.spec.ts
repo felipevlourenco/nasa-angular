@@ -84,4 +84,22 @@ describe('Home', () => {
         expect(text).toContain('Candidate details');
         expect(text).toContain(candidate.ra);
     });
+
+    it('calls store.load() again when Refresh is clicked', () => {
+        const { fixture, storeStub } = setup({ objects: signal(mockObjects) });
+        fixture.detectChanges();
+
+        const refresh = fixture.nativeElement.querySelector('button');
+        refresh.click();
+
+        expect(storeStub.load).toHaveBeenCalledTimes(2);
+    });
+
+    it('disables the button while loading', () => {
+        const { fixture } = setup({ loading: signal(true) });
+        fixture.detectChanges();
+
+        const refresh = fixture.nativeElement.querySelector('button');
+        expect(refresh.disabled).toBe(true);
+    });
 });

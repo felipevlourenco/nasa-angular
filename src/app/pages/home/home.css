@@ -1,0 +1,43 @@
+.action-section {
+    display: flex;
+    justify-content: space-between;
+}
+
+.table-section {
+    --table-hight: 500px;
+
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+}
+
+.progress {
+    height: 4px;
+    position: absolute;
+    top: 0px;
+    width: calc(100% - 2px);
+    left: 1px;
+    z-index: 4;
+    border-radius: 8px 8px 0 0;
+}
+
+.table {
+    width: 100%;
+    height: var(--table-hight);
+}
+
+.animate-spin {
+    animation: spin 1s ease infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-spin {
+        animation: none;
+    }
+}

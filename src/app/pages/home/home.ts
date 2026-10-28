@@ -1,11 +1,14 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { Refresh } from '@primeicons/angular/refresh';
+import { Spinner } from '@primeicons/angular/spinner';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef, RowClickedEvent, themeQuartz, ValueGetterParams } from 'ag-grid-community';
+import { ButtonModule } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
 import { InputTextModule } from 'primeng/inputtext';
+import { ProgressBarModule } from 'primeng/progressbar';
 import { ScoutStore } from '../../core/store/scout-store';
 import type { ScoutObject, ThreatLevel } from '../../core/types';
-import { Loading } from '../../shared/loading/loading';
 
 function threatLevel(score: number): ThreatLevel {
     if (score >= 70) {
@@ -19,7 +22,15 @@ function threatLevel(score: number): ThreatLevel {
 }
 
 @Component({
-    imports: [Loading, AgGridAngular, DrawerModule, InputTextModule],
+    imports: [
+        AgGridAngular,
+        DrawerModule,
+        InputTextModule,
+        ButtonModule,
+        Refresh,
+        Spinner,
+        ProgressBarModule,
+    ],
     selector: 'home',
     styleUrl: './home.css',
     templateUrl: './home.html',

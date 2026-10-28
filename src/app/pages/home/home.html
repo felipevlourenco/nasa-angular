@@ -1,25 +1,39 @@
 <div>
     <h1>Home page</h1>
-    <input
-        pInputText
-        type="search"
-        placeholder="Search something..."
-        (input)="onSearch($event.target.value)"
-    />
-    @if (store.loading()) {
-        <loading />
-    } @else if (store.error()) {
+    <div class="action-section">
+        <input
+            pInputText
+            type="search"
+            placeholder="Search something..."
+            (input)="onSearch($event.target.value)"
+        />
+        <button pButton (click)="store.load()" [disabled]="store.loading()">
+            @if (store.loading()) {
+                <svg data-p-icon="spinner" class="animate-spin"></svg>
+            } @else {
+                <svg data-p-icon="refresh"></svg>
+                Refresh
+            }
+        </button>
+    </div>
+    @if (store.error()) {
         <p>{{ store.error() }}</p>
     } @else {
-        <ag-grid-angular
-            style="height: 500px; width: 100%"
-            [theme]="theme"
-            [defaultColDef]="defaultColDef"
-            [columnDefs]="columnDefs"
-            [rowData]="store.objects()"
-            [quickFilterText]="searchTerm()"
-            (rowClicked)="onRowClicked($event)"
-        />
+        <div class="table-section">
+            @if (store.loading()) {
+                <p-progressbar mode="indeterminate" class="progress" />
+            }
+            <ag-grid-angular
+                class="table"
+                [theme]="theme"
+                [defaultColDef]="defaultColDef"
+                [columnDefs]="columnDefs"
+                [rowData]="store.objects()"
+                [quickFilterText]="searchTerm()"
+                [loading]="store.loading()"
+                (rowClicked)="onRowClicked($event)"
+            />
+        </div>
         <p-drawer [(visible)]="drawerOpen" header="Candidate details" position="right">
             @if (selectedObject(); as obj) {
                 <dl>
