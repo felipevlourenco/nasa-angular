@@ -61,7 +61,12 @@ export class Home implements OnInit {
         { field: 'caDist', headerName: 'Close approach (LD)' },
         { field: 'neoScore', headerName: 'NEO score' },
         { field: 'phaScore', headerName: 'PHA score' },
-        { field: 'lastRun', headerName: 'Updated (UTC)' },
+        {
+            field: 'lastRun',
+            headerName: 'Updated (UTC)',
+            // lastRun is a "YYYY-MM-DD HH:MM" string — compare as dates
+            comparator: (a: string, b: string) => Date.parse(a) - Date.parse(b),
+        },
         {
             headerName: 'Threat index',
             valueGetter: ({ data }: ValueGetterParams<ScoutObject>) =>
