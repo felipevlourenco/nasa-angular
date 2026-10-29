@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ExclamationCircle } from '@primeicons/angular/exclamation-circle';
 import { Refresh } from '@primeicons/angular/refresh';
 import { Spinner } from '@primeicons/angular/spinner';
 import { AgGridAngular } from 'ag-grid-angular';
@@ -37,6 +38,7 @@ function threatLevelFor(score: number): ThreatLevel {
         ButtonModule,
         ProgressBarModule,
         ReactiveFormsModule,
+        ExclamationCircle,
         Refresh,
         Spinner,
     ],

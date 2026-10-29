@@ -7,7 +7,10 @@
     <div class="action-section">
         <input pInputText type="search" placeholder="Search something..." [formControl]="searchControl" />
         @if (store.error()) {
-            <span class="status-text">Last attempt failed</span>
+            <span class="status-text">
+                <svg data-p-icon="exclamation-circle"></svg>
+                Last attempt failed
+            </span>
         }
         <button pButton (click)="store.load()" [disabled]="store.loading()">
             @if (store.loading()) {

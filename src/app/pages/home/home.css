@@ -16,6 +16,18 @@ h1 {
     margin-bottom: 16px;
 }
 
+.status-text {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #dc2626;
+}
+
+.status-text svg {
+    width: 16px;
+    height: 16px;
+}
+
 .table-section {
     --table-hight: 500px;
 
