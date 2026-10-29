@@ -1,4 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Refresh } from '@primeicons/angular/refresh';
 import { Spinner } from '@primeicons/angular/spinner';
 import { AgGridAngular } from 'ag-grid-angular';
@@ -7,6 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
 import { InputTextModule } from 'primeng/inputtext';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { ScoutStore } from '../../core/store/scout-store';
 import type { ScoutObject, ThreatLevel } from '../../core/types';
 import { ErrorOverlay } from './overlays/error-overlay';
@@ -33,6 +36,7 @@ function threatLevelFor(score: number): ThreatLevel {
         InputTextModule,
         ButtonModule,
         ProgressBarModule,
+        ReactiveFormsModule,
         Refresh,
         Spinner,
     ],
@@ -42,7 +46,12 @@ function threatLevelFor(score: number): ThreatLevel {
 })
 export class Home implements OnInit {
     protected readonly store = inject(ScoutStore);
-    protected readonly searchTerm = signal('');
+    readonly searchControl = new FormControl('', { nonNullable: true });
+    // grid's quickFilterText re-filters the whole grid on every keystroke, so debounce it
+    protected readonly searchTerm = toSignal(
+        this.searchControl.valueChanges.pipe(debounceTime(250), distinctUntilChanged()),
+        { initialValue: '' },
+    );
     protected readonly drawerOpen = signal(false);
     protected readonly selectedObject = signal<ScoutObject | null>(null);
 
@@ -82,10 +91,6 @@ export class Home implements OnInit {
 
     ngOnInit(): void {
         this.store.load();
-    }
-
-    onSearch(query: string): void {
-        this.searchTerm.set(query);
     }
 
     onRowClicked({ data }: RowClickedEvent<ScoutObject>): void {

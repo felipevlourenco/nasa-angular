@@ -57,15 +57,22 @@ describe('Home', () => {
         expect(fixture.nativeElement.querySelector('ag-grid-angular')).toBeTruthy();
     });
 
-    it('passes the search input value to the grid as quickFilterText', () => {
+    it('passes the search input value to the grid as quickFilterText, debounced', () => {
+        vi.useFakeTimers();
         const { fixture } = setup({ objects: signal(mockObjects) });
         fixture.detectChanges();
 
-        fixture.componentInstance.onSearch('ISeO');
+        fixture.componentInstance.searchControl.setValue('ISeO');
         fixture.detectChanges();
 
         const grid = fixture.debugElement.query(By.directive(AgGridAngular)).componentInstance;
+        expect(grid.quickFilterText).toBe('');
+
+        vi.advanceTimersByTime(250);
+        fixture.detectChanges();
+
         expect(grid.quickFilterText).toBe('ISeO');
+        vi.useRealTimers();
     });
 
     it('opens the drawer with the clicked candidate details', () => {

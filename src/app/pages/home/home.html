@@ -5,12 +5,7 @@
         see its full details.
     </p>
     <div class="action-section">
-        <input
-            pInputText
-            type="search"
-            placeholder="Search something..."
-            (input)="onSearch($event.target.value)"
-        />
+        <input pInputText type="search" placeholder="Search something..." [formControl]="searchControl" />
         @if (store.error()) {
             <span class="status-text">Last attempt failed</span>
         }
