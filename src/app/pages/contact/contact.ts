@@ -1,5 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CheckCircle } from '@primeicons/angular/check-circle';
 import { Envelope } from '@primeicons/angular/envelope';
 import { Github } from '@primeicons/angular/github';
 import { Linkedin } from '@primeicons/angular/linkedin';
@@ -12,6 +13,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
+import { ContactStore } from '../../core/store/contact-store';
 
 @Component({
     imports: [
@@ -21,6 +23,7 @@ import { ToastModule } from 'primeng/toast';
         SelectModule,
         TextareaModule,
         ToastModule,
+        CheckCircle,
         Envelope,
         Phone,
         Map,
@@ -36,9 +39,9 @@ import { ToastModule } from 'primeng/toast';
 export class Contact {
     protected readonly fb = inject(FormBuilder);
     protected readonly messageService = inject(MessageService);
+    protected readonly store = inject(ContactStore);
 
     readonly employeeRanges = ['1–10', '11–50', '51–200', '201–500', '500+'];
-    readonly submitting = signal(false);
 
     readonly form = this.fb.nonNullable.group({
         fullName: ['', Validators.required],
@@ -48,7 +51,7 @@ export class Contact {
         message: ['', Validators.required],
     });
 
-    onSubmit(): void {
+    async onSubmit(): Promise<void> {
         if (this.form.invalid) {
             this.form.markAllAsTouched();
             this.messageService.add({
@@ -60,16 +63,11 @@ export class Contact {
             return;
         }
 
-        this.submitting.set(true);
+        await this.store.submit();
+    }
 
-        // Fake network latency so the loading state is visible
-        setTimeout(() => {
-            this.submitting.set(false);
-            this.messageService.add({
-                severity: 'success',
-                summary: 'Message Sent',
-                detail: 'Your message was successfully sent.',
-            });
-        }, 1000);
+    sendAnother(): void {
+        this.store.reset();
+        this.form.reset();
     }
 }

@@ -38,53 +38,67 @@
         </div>
     </section>
     <section class="form-card">
-        <h2>Send your question</h2>
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
-            <div class="form-row">
+        @if (store.submitted()) {
+            <div class="success-state">
+                <svg data-p-icon="check-circle" class="success-icon"></svg>
+                <h2>Message sent</h2>
+                <p>Thanks for reaching out — we'll get back to you soon.</p>
+                <button pButton type="button" (click)="sendAnother()">Send another message</button>
+            </div>
+        } @else {
+            <h2>Send your question</h2>
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div class="form-row">
+                    <div class="field">
+                        <label for="fullName">Full name *</label>
+                        <input id="fullName" pInputText formControlName="fullName" />
+                        @if (form.controls.fullName.invalid && form.controls.fullName.touched) {
+                            <small class="error">Full name is required.</small>
+                        }
+                    </div>
+                    <div class="field">
+                        <label for="email">Work email *</label>
+                        <input id="email" pInputText type="email" formControlName="email" />
+                        @if (form.controls.email.touched && form.controls.email.hasError('required')) {
+                            <small class="error">Email is required.</small>
+                        }
+                        @if (form.controls.email.touched && form.controls.email.hasError('email')) {
+                            <small class="error">Enter a valid email.</small>
+                        }
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="field">
+                        <label for="company">Company (optional)</label>
+                        <input id="company" pInputText formControlName="company" />
+                    </div>
+                    <div class="field">
+                        <label for="employees">Employees (optional)</label>
+                        <p-select
+                            id="employees"
+                            formControlName="employees"
+                            [options]="employeeRanges"
+                            placeholder="Select a range"
+                        />
+                    </div>
+                </div>
                 <div class="field">
-                    <label for="fullName">Full name *</label>
-                    <input id="fullName" pInputText formControlName="fullName" />
-                    @if (form.controls.fullName.invalid && form.controls.fullName.touched) {
-                        <small class="error">Full name is required.</small>
+                    <label for="message">Message *</label>
+                    <textarea id="message" pTextarea rows="5" formControlName="message"></textarea>
+                    @if (form.controls.message.invalid && form.controls.message.touched) {
+                        <small class="error">Message is required.</small>
                     }
                 </div>
-                <div class="field">
-                    <label for="email">Work email *</label>
-                    <input id="email" pInputText type="email" formControlName="email" />
-                    @if (form.controls.email.touched && form.controls.email.hasError('required')) {
-                        <small class="error">Email is required.</small>
-                    }
-                    @if (form.controls.email.touched && form.controls.email.hasError('email')) {
-                        <small class="error">Enter a valid email.</small>
-                    }
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="field">
-                    <label for="company">Company (optional)</label>
-                    <input id="company" pInputText formControlName="company" />
-                </div>
-                <div class="field">
-                    <label for="employees">Employees (optional)</label>
-                    <p-select
-                        id="employees"
-                        formControlName="employees"
-                        [options]="employeeRanges"
-                        placeholder="Select a range"
-                    />
-                </div>
-            </div>
-            <div class="field">
-                <label for="message">Message *</label>
-                <textarea id="message" pTextarea rows="5" formControlName="message"></textarea>
-                @if (form.controls.message.invalid && form.controls.message.touched) {
-                    <small class="error">Message is required.</small>
-                }
-            </div>
-            <button pButton type="submit" [disabled]="form.invalid || submitting()" [loading]="submitting()">
-                Send message
-            </button>
-        </form>
+                <button
+                    pButton
+                    type="submit"
+                    [disabled]="form.invalid || store.submitting()"
+                    [loading]="store.submitting()"
+                >
+                    Send message
+                </button>
+            </form>
+        }
     </section>
     <p-toast />
 </div>
