@@ -81,7 +81,9 @@
                     <small class="error">Message is required.</small>
                 }
             </div>
-            <button pButton type="submit" [disabled]="form.invalid">Send message</button>
+            <button pButton type="submit" [disabled]="form.invalid || submitting()" [loading]="submitting()">
+                Send message
+            </button>
         </form>
     </section>
     <p-toast />

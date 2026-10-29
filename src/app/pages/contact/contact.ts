@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Envelope } from '@primeicons/angular/envelope';
 import { Github } from '@primeicons/angular/github';
@@ -38,6 +38,7 @@ export class Contact {
     protected readonly messageService = inject(MessageService);
 
     readonly employeeRanges = ['1–10', '11–50', '51–200', '201–500', '500+'];
+    readonly submitting = signal(false);
 
     readonly form = this.fb.nonNullable.group({
         fullName: ['', Validators.required],
@@ -59,11 +60,16 @@ export class Contact {
             return;
         }
 
-        // Send
-        this.messageService.add({
-            severity: 'success',
-            summary: 'Message Sent',
-            detail: 'Your was succesfully sent.',
-        });
+        this.submitting.set(true);
+
+        // Fake network latency so the loading state is visible
+        setTimeout(() => {
+            this.submitting.set(false);
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Message Sent',
+                detail: 'Your message was successfully sent.',
+            });
+        }, 1000);
     }
 }
